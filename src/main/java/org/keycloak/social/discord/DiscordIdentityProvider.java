@@ -24,12 +24,12 @@ import org.keycloak.broker.oidc.AbstractOAuth2IdentityProvider;
 import org.keycloak.broker.oidc.mappers.AbstractJsonUserAttributeMapper;
 import org.keycloak.broker.provider.BrokeredIdentityContext;
 import org.keycloak.broker.provider.IdentityBrokerException;
-import org.keycloak.broker.provider.util.SimpleHttp;
 import org.keycloak.broker.social.SocialIdentityProvider;
 import org.keycloak.events.EventBuilder;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.services.ErrorPageException;
 import org.keycloak.services.messages.Messages;
+import org.keycloak.broker.provider.util.SimpleHttp;
 
 import java.util.Set;
 
@@ -68,8 +68,8 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
     @Override
     protected BrokeredIdentityContext extractIdentityFromProfile(EventBuilder event, JsonNode profile) {
         BrokeredIdentityContext user = new BrokeredIdentityContext(getJsonProperty(profile, "id"));
-
-        user.setUsername(getJsonProperty(profile, "id"));
+        
+        user.setUsername(getJsonProperty(profile, "username"));
         user.setEmail(getJsonProperty(profile, "email"));
         user.setIdpConfig(getConfig());
         user.setIdp(this);
@@ -82,13 +82,14 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
     @Override
     protected BrokeredIdentityContext doGetFederatedIdentity(String accessToken) {
         log.debug("doGetFederatedIdentity()");
-        JsonNode profile = null;
+        JsonNode profile;
         try {
             profile = SimpleHttp.doGet(PROFILE_URL, session).header("Authorization", "Bearer " + accessToken).asJson();
         } catch (Exception e) {
-            throw new IdentityBrokerException("Could not obtain user profile from discord.", e);
+            throw new IdentityBrokerException("Could not obtain user profile from Discord.", e);
         }
 
+        // Vérification des guilds si nécessaire
         if (getConfig().hasAllowedGuilds()) {
             if (!isAllowedGuild(accessToken)) {
                 throw new ErrorPageException(session, Response.Status.FORBIDDEN, Messages.INVALID_REQUESTER);
@@ -109,7 +110,7 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
             }
             return false;
         } catch (Exception e) {
-            throw new IdentityBrokerException("Could not obtain guilds the current user is a member of from discord.", e);
+            throw new IdentityBrokerException("Could not obtain guilds the current user is a member of from Discord.", e);
         }
     }
 
