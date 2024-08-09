@@ -73,7 +73,7 @@ public class DiscordIdentityProvider extends AbstractOAuth2IdentityProvider<Disc
     );
 
     user.setUsername(getJsonProperty(profile, "id"));
-    user.setEmail(getJsonProperty(profile, "id"))@private.xyz;
+    user.setEmail(getJsonProperty(profile, "email"));
     user.setIdp(this);
 
     AbstractJsonUserAttributeMapper.storeUserProfileForMapper(user, profile, getConfig().getAlias());
