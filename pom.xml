@@ -7,11 +7,11 @@
 
     <groupId>org.keycloak.extensions</groupId>
     <artifactId>keycloak-discord</artifactId>
-    <version>0.5.1-SNAPSHOT</version>
+    <version>0.6.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
-        <version.keycloak>22.0.1</version.keycloak>
+        <version.keycloak>25.0.1</version.keycloak>
     </properties>
 
     <dependencies>
