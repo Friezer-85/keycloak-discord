@@ -5,7 +5,7 @@ Keycloak Social Login extension for Discord.
 
 ## Install
 
-Download `keycloak-discord-<version>.jar` from [Releases page](https://github.com/wadahiro/keycloak-discord/releases).
+Download `keycloak-discord-<version>.jar` from [Releases page](https://github.com/Friezer-85/keycloak-discord/releases).
 Then deploy it into `$KEYCLOAK_HOME/providers` directory.
 
 ## Setup
